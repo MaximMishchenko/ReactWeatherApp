@@ -9,7 +9,10 @@ import About from './components/About'
 import Examples from './components/Examples'
 import NotFound from './components/NotFound'
 
-//import App from './components/App'
+//load foundation
+import 'style-loader!css-loader!foundation-sites/dist/css/foundation.min.css'
+
+//$(document).foundation()
 
 const app = document.getElementById('app')
 
