@@ -12724,9 +12724,18 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 var About = function About() {
   return _react2.default.createElement(
-    'h1',
+    'div',
     null,
-    'About component'
+    _react2.default.createElement(
+      'h1',
+      null,
+      'About'
+    ),
+    _react2.default.createElement(
+      'p',
+      null,
+      'Welcome to about page!'
+    )
   );
 };
 
