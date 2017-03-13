@@ -12,8 +12,6 @@ class WeatherForm extends React.Component {
       this.props.onSearch(location)
     }
 
-    console.log(location)
-
   }
 
   render(){

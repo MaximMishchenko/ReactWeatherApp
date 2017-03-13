@@ -18,7 +18,6 @@ class Weather extends React.Component {
 
   handleSearch(location){
     let self = this
-    console.log(openWeatherMap);
 
     this.setState({isLoading: true})
 
