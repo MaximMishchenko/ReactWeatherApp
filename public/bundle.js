@@ -13779,7 +13779,7 @@ var Examples = function Examples() {
         _react2.default.createElement(
           _reactRouter.Link,
           { to: '/?q=Dnepr' },
-          'Dnepr, UA'
+          'Dnipro, UA'
         )
       ),
       _react2.default.createElement(
@@ -14067,7 +14067,7 @@ var Weather = function (_React$Component) {
         if (isLoading) {
           return _react2.default.createElement(
             'h3',
-            null,
+            { className: 'text-center' },
             'Fetching weather...'
           );
         } else if (temp && location) {
@@ -14078,6 +14078,11 @@ var Weather = function (_React$Component) {
       return _react2.default.createElement(
         'div',
         null,
+        _react2.default.createElement(
+          'h1',
+          { className: 'text-center' },
+          'Get Weather'
+        ),
         _react2.default.createElement(_WeatherForm2.default, { onSearch: this.handleSearch.bind(this) }),
         renderMessage()
       );
@@ -14144,7 +14149,7 @@ var WeatherForm = function (_React$Component) {
         _react2.default.createElement('input', { type: 'text', ref: 'location' }),
         _react2.default.createElement(
           'button',
-          null,
+          { className: 'button expanded hollow' },
           'Get weather'
         )
       );
@@ -14206,7 +14211,7 @@ var WeatherMessage = function (_React$Component) {
         null,
         _react2.default.createElement(
           'h3',
-          null,
+          { className: 'text-center' },
           'It\'s it ',
           temp,
           ' in ',
