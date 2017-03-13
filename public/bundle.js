@@ -13691,17 +13691,46 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 var About = function About() {
   return _react2.default.createElement(
-    'div',
+    "div",
     null,
     _react2.default.createElement(
-      'h1',
-      null,
-      'About'
+      "h1",
+      { className: "text-center" },
+      "About"
     ),
     _react2.default.createElement(
-      'p',
+      "p",
       null,
-      'Welcome to about page!'
+      "This is a simple weather application build on React."
+    ),
+    _react2.default.createElement(
+      "p",
+      null,
+      "Here are some of tools I used:"
+    ),
+    _react2.default.createElement(
+      "ul",
+      null,
+      _react2.default.createElement(
+        "li",
+        null,
+        _react2.default.createElement(
+          "a",
+          { href: "https://facebook.github.io/react/" },
+          "React"
+        ),
+        " - This was the JavaScript library used."
+      ),
+      _react2.default.createElement(
+        "li",
+        null,
+        _react2.default.createElement(
+          "a",
+          { href: "http://openweathermap.org/" },
+          "Open Weather Map"
+        ),
+        " - I used Open Weather Map to search for weather data by city name."
+      )
     )
   );
 };
