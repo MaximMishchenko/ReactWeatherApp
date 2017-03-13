@@ -8,7 +8,7 @@ import openWeatherMap from '../api/openWeatherMap'
 class Weather extends React.Component {
   constructor(props){
     super(props)
-    console.log(openWeatherMap);
+
     this.state = {
       isLoading: false,
       location: this.props.location,

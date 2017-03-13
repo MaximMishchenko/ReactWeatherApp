@@ -13723,6 +13723,8 @@ var _react = __webpack_require__(5);
 
 var _react2 = _interopRequireDefault(_react);
 
+var _reactRouter = __webpack_require__(113);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var Examples = function Examples() {
@@ -13730,14 +13732,36 @@ var Examples = function Examples() {
     'div',
     null,
     _react2.default.createElement(
-      'h2',
-      null,
-      'Examples!'
+      'h1',
+      { className: 'text-center' },
+      'Examples'
     ),
     _react2.default.createElement(
       'p',
       null,
-      'Welcome to examples page'
+      'Here are a few example locations to try out'
+    ),
+    _react2.default.createElement(
+      'ol',
+      null,
+      _react2.default.createElement(
+        'li',
+        null,
+        _react2.default.createElement(
+          _reactRouter.Link,
+          { to: '/?q=Dnepr' },
+          'Dnepr, UA'
+        )
+      ),
+      _react2.default.createElement(
+        'li',
+        null,
+        _react2.default.createElement(
+          _reactRouter.Link,
+          { to: '/?q=London' },
+          'London, UK'
+        )
+      )
     )
   );
 };
@@ -13770,11 +13794,18 @@ var Main = function Main(props) {
     'div',
     null,
     _react2.default.createElement(_Nav2.default, null),
-    props.children
+    _react2.default.createElement(
+      'div',
+      { className: 'row' },
+      _react2.default.createElement(
+        'div',
+        { className: 'columns medium-6 large-4 small-centered' },
+        props.children
+      )
+    )
   );
 };
 
-//components
 exports.default = Main;
 
 /***/ }),
@@ -13968,7 +13999,6 @@ var Weather = function (_React$Component) {
 
     var _this = _possibleConstructorReturn(this, (Weather.__proto__ || Object.getPrototypeOf(Weather)).call(this, props));
 
-    console.log(_openWeatherMap2.default);
     _this.state = {
       isLoading: false,
       location: _this.props.location,
