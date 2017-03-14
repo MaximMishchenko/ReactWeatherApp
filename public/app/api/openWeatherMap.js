@@ -2,8 +2,6 @@ import axios from 'axios'
 
 const OPEN_WEATHER_MAP_URL = 'http://api.openweathermap.org/data/2.5/weather?appid=0c7a7d50ac2c975efef02886cfb1beaf&units=metric'
 
-//0c7a7d50ac2c975efef02886cfb1beaf
-
 export default {
   getTemp: (location) => {
     let encodedLocation = encodeURIComponent(location)

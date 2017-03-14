@@ -12760,8 +12760,6 @@ __webpack_require__(279);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-//$(document).foundation()
-
 //components
 var app = document.getElementById('app');
 
@@ -13653,8 +13651,6 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 var OPEN_WEATHER_MAP_URL = 'http://api.openweathermap.org/data/2.5/weather?appid=0c7a7d50ac2c975efef02886cfb1beaf&units=metric';
 
-//0c7a7d50ac2c975efef02886cfb1beaf
-
 exports.default = {
   getTemp: function getTemp(location) {
     var encodedLocation = encodeURIComponent(location);
@@ -14008,6 +14004,10 @@ var _WeatherMessage = __webpack_require__(148);
 
 var _WeatherMessage2 = _interopRequireDefault(_WeatherMessage);
 
+var _ErrorModal = __webpack_require__(282);
+
+var _ErrorModal2 = _interopRequireDefault(_ErrorModal);
+
 var _openWeatherMap = __webpack_require__(140);
 
 var _openWeatherMap2 = _interopRequireDefault(_openWeatherMap);
@@ -14031,7 +14031,8 @@ var Weather = function (_React$Component) {
     _this.state = {
       isLoading: false,
       location: _this.props.location,
-      temp: _this.props.temp
+      temp: _this.props.temp,
+      errorMessage: _this.props.message
     };
     return _this;
   }
@@ -14041,7 +14042,10 @@ var Weather = function (_React$Component) {
     value: function handleSearch(location) {
       var self = this;
 
-      this.setState({ isLoading: true });
+      this.setState({
+        isLoading: true,
+        errorMessage: undefined
+      });
 
       _openWeatherMap2.default.getTemp(location).then(function (temp) {
         self.setState({
@@ -14049,9 +14053,11 @@ var Weather = function (_React$Component) {
           temp: temp,
           isLoading: false
         });
-      }, function (err) {
-        self.setState({ isLoading: false });
-        alert(err);
+      }, function (e) {
+        self.setState({
+          isLoading: false,
+          errorMessage: e.message
+        });
       });
     }
   }, {
@@ -14060,7 +14066,8 @@ var Weather = function (_React$Component) {
       var _state = this.state,
           isLoading = _state.isLoading,
           temp = _state.temp,
-          location = _state.location;
+          location = _state.location,
+          errorMessage = _state.errorMessage;
 
 
       var renderMessage = function renderMessage() {
@@ -14075,6 +14082,12 @@ var Weather = function (_React$Component) {
         }
       };
 
+      var renderError = function renderError() {
+        if (typeof errorMessage === 'string') {
+          return _react2.default.createElement(_ErrorModal2.default, { message: errorMessage });
+        }
+      };
+
       return _react2.default.createElement(
         'div',
         null,
@@ -14084,7 +14097,8 @@ var Weather = function (_React$Component) {
           'Get Weather'
         ),
         _react2.default.createElement(_WeatherForm2.default, { onSearch: this.handleSearch.bind(this) }),
-        renderMessage()
+        renderMessage(),
+        renderError()
       );
     }
   }]);
@@ -31106,6 +31120,99 @@ __webpack_require__(121);
 __webpack_require__(120);
 module.exports = __webpack_require__(119);
 
+
+/***/ }),
+/* 282 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function($) {
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(5);
+
+var _react2 = _interopRequireDefault(_react);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var ErrorModal = function (_React$Component) {
+  _inherits(ErrorModal, _React$Component);
+
+  function ErrorModal(props) {
+    _classCallCheck(this, ErrorModal);
+
+    return _possibleConstructorReturn(this, (ErrorModal.__proto__ || Object.getPrototypeOf(ErrorModal)).call(this, props));
+  }
+
+  _createClass(ErrorModal, [{
+    key: 'componentDidMount',
+    value: function componentDidMount() {
+      var modal = new Foundation.Reveal($('#error-modal'));
+      modal.open();
+    }
+  }, {
+    key: 'render',
+    value: function render() {
+      var _props = this.props,
+          title = _props.title,
+          message = _props.message;
+
+      console.log(this.props);
+      return _react2.default.createElement(
+        'div',
+        { id: 'error-modal', className: 'reveal tiny text-center', 'data-reveal': '' },
+        _react2.default.createElement(
+          'h4',
+          null,
+          title
+        ),
+        _react2.default.createElement(
+          'p',
+          null,
+          message
+        ),
+        _react2.default.createElement(
+          'p',
+          null,
+          _react2.default.createElement(
+            'button',
+            { className: 'button hollow', 'data-close': '' },
+            'Okay'
+          )
+        )
+      );
+    }
+  }]);
+
+  return ErrorModal;
+}(_react2.default.Component);
+
+ErrorModal.defaultProps = {
+  title: 'Title'
+};
+ErrorModal.propTypes = {
+  title: _react.PropTypes.string,
+  message: _react.PropTypes.string.isRequired
+};
+exports.default = ErrorModal;
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(283)))
+
+/***/ }),
+/* 283 */
+/***/ (function(module, exports) {
+
+module.exports = jQuery;
 
 /***/ })
 /******/ ]);

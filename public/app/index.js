@@ -12,8 +12,6 @@ import NotFound from './components/NotFound'
 //load foundation
 import 'style-loader!css-loader!foundation-sites/dist/css/foundation.min.css'
 
-//$(document).foundation()
-
 const app = document.getElementById('app')
 
 render(
