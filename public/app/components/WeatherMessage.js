@@ -1,18 +1,13 @@
 import React from 'react'
-import { render } from 'react-dom'
 
-class WeatherMessage extends React.Component {
+let WeatherMessage = (props) => {
+  let {temp, location} = props
 
-  render(){
-    let {temp, location} = this.props
-
-    console.log(this.props)
-    return(
-      <div>
-        <h3 className="text-center">It's it {temp} in {location}</h3>
-      </div>
-    )
-  }
+  return(
+    <div>
+      <h3 className="text-center">It's it {temp} in {location}</h3>
+    </div>
+  )
 }
 
 export default WeatherMessage
