@@ -38,7 +38,7 @@ class Weather extends React.Component {
     }, (e) => {
       self.setState({
         isLoading: false,
-        errorMessage: e
+        errorMessage: e.message
       })
     })
   }

@@ -13657,8 +13657,8 @@ exports.default = {
       } else {
         return res.data.main.temp;
       }
-    }, function (res) {
-      throw new Error(res.data.message);
+    }, function (err) {
+      throw new Error(err.message);
     });
   }
 };
@@ -13745,6 +13745,14 @@ var _react = __webpack_require__(4);
 
 var _react2 = _interopRequireDefault(_react);
 
+var _reactDom = __webpack_require__(179);
+
+var _reactDom2 = _interopRequireDefault(_reactDom);
+
+var _server = __webpack_require__(297);
+
+var _server2 = _interopRequireDefault(_server);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -13765,20 +13773,13 @@ var ErrorModal = function (_React$Component) {
   _createClass(ErrorModal, [{
     key: 'componentDidMount',
     value: function componentDidMount() {
-      var modal = new Foundation.Reveal($('#error-modal'));
-      modal.open();
-    }
-  }, {
-    key: 'render',
-    value: function render() {
       var _props = this.props,
           title = _props.title,
           message = _props.message;
 
-      console.log(this.props);
-      return _react2.default.createElement(
+      var modalContent = _react2.default.createElement(
         'div',
-        { id: 'error-modal', className: 'reveal tiny text-center', 'data-reveal': '' },
+        { id: 'error-modal', className: 'reveal tiny text-center custom-modal', 'data-reveal': '' },
         _react2.default.createElement(
           'h4',
           null,
@@ -13799,6 +13800,17 @@ var ErrorModal = function (_React$Component) {
           )
         )
       );
+
+      var modalElement = $(_server2.default.renderToString(modalContent));
+      $(_reactDom2.default.findDOMNode(this)).html(modalElement);
+
+      var modal = new Foundation.Reveal($('#error-modal'));
+      modal.open();
+    }
+  }, {
+    key: 'render',
+    value: function render() {
+      return _react2.default.createElement('div', null);
     }
   }]);
 
@@ -13806,7 +13818,7 @@ var ErrorModal = function (_React$Component) {
 }(_react2.default.Component);
 
 ErrorModal.defaultProps = {
-  title: 'Title'
+  title: 'City not found'
 };
 ErrorModal.propTypes = {
   title: _react.PropTypes.string,
@@ -14061,9 +14073,9 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 var NotFound = function NotFound() {
   return _react2.default.createElement(
-    'h1',
-    null,
-    'Page not found'
+    "h1",
+    { className: "text-center" },
+    "Page not found"
   );
 };
 
@@ -14150,7 +14162,7 @@ var Weather = function (_React$Component) {
       }, function (e) {
         self.setState({
           isLoading: false,
-          errorMessage: e
+          errorMessage: e.message
         });
       });
     }
@@ -31298,6 +31310,170 @@ if(false) {
 	// When the module is disposed, remove the <style> tags
 	module.hot.dispose(function() { update(); });
 }
+
+/***/ }),
+/* 294 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/**
+ * Copyright 2013-present, Facebook, Inc.
+ * All rights reserved.
+ *
+ * This source code is licensed under the BSD-style license found in the
+ * LICENSE file in the root directory of this source tree. An additional grant
+ * of patent rights can be found in the PATENTS file in the same directory.
+ *
+ */
+
+
+
+var ReactDefaultInjection = __webpack_require__(210);
+var ReactServerRendering = __webpack_require__(296);
+var ReactVersion = __webpack_require__(225);
+
+ReactDefaultInjection.inject();
+
+var ReactDOMServer = {
+  renderToString: ReactServerRendering.renderToString,
+  renderToStaticMarkup: ReactServerRendering.renderToStaticMarkup,
+  version: ReactVersion
+};
+
+module.exports = ReactDOMServer;
+
+/***/ }),
+/* 295 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/**
+ * Copyright 2014-present, Facebook, Inc.
+ * All rights reserved.
+ *
+ * This source code is licensed under the BSD-style license found in the
+ * LICENSE file in the root directory of this source tree. An additional grant
+ * of patent rights can be found in the PATENTS file in the same directory.
+ *
+ */
+
+
+
+var ReactServerBatchingStrategy = {
+  isBatchingUpdates: false,
+  batchedUpdates: function (callback) {
+    // Don't do anything here. During the server rendering we don't want to
+    // schedule any updates. We will simply ignore them.
+  }
+};
+
+module.exports = ReactServerBatchingStrategy;
+
+/***/ }),
+/* 296 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function(process) {/**
+ * Copyright 2013-present, Facebook, Inc.
+ * All rights reserved.
+ *
+ * This source code is licensed under the BSD-style license found in the
+ * LICENSE file in the root directory of this source tree. An additional grant
+ * of patent rights can be found in the PATENTS file in the same directory.
+ *
+ */
+
+
+var _prodInvariant = __webpack_require__(3);
+
+var React = __webpack_require__(28);
+var ReactDOMContainerInfo = __webpack_require__(195);
+var ReactDefaultBatchingStrategy = __webpack_require__(209);
+var ReactInstrumentation = __webpack_require__(11);
+var ReactMarkupChecksum = __webpack_require__(217);
+var ReactReconciler = __webpack_require__(25);
+var ReactServerBatchingStrategy = __webpack_require__(295);
+var ReactServerRenderingTransaction = __webpack_require__(223);
+var ReactUpdates = __webpack_require__(13);
+
+var emptyObject = __webpack_require__(29);
+var instantiateReactComponent = __webpack_require__(102);
+var invariant = __webpack_require__(1);
+
+var pendingTransactions = 0;
+
+/**
+ * @param {ReactElement} element
+ * @return {string} the HTML markup
+ */
+function renderToStringImpl(element, makeStaticMarkup) {
+  var transaction;
+  try {
+    ReactUpdates.injection.injectBatchingStrategy(ReactServerBatchingStrategy);
+
+    transaction = ReactServerRenderingTransaction.getPooled(makeStaticMarkup);
+
+    pendingTransactions++;
+
+    return transaction.perform(function () {
+      var componentInstance = instantiateReactComponent(element, true);
+      var markup = ReactReconciler.mountComponent(componentInstance, transaction, null, ReactDOMContainerInfo(), emptyObject, 0 /* parentDebugID */
+      );
+      if (process.env.NODE_ENV !== 'production') {
+        ReactInstrumentation.debugTool.onUnmountComponent(componentInstance._debugID);
+      }
+      if (!makeStaticMarkup) {
+        markup = ReactMarkupChecksum.addChecksumToMarkup(markup);
+      }
+      return markup;
+    }, null);
+  } finally {
+    pendingTransactions--;
+    ReactServerRenderingTransaction.release(transaction);
+    // Revert to the DOM batching strategy since these two renderers
+    // currently share these stateful modules.
+    if (!pendingTransactions) {
+      ReactUpdates.injection.injectBatchingStrategy(ReactDefaultBatchingStrategy);
+    }
+  }
+}
+
+/**
+ * Render a ReactElement to its initial HTML. This should only be used on the
+ * server.
+ * See https://facebook.github.io/react/docs/top-level-api.html#reactdomserver.rendertostring
+ */
+function renderToString(element) {
+  !React.isValidElement(element) ? process.env.NODE_ENV !== 'production' ? invariant(false, 'renderToString(): You must pass a valid ReactElement.') : _prodInvariant('46') : void 0;
+  return renderToStringImpl(element, false);
+}
+
+/**
+ * Similar to renderToString, except this doesn't create extra DOM attributes
+ * such as data-react-id that React uses internally.
+ * See https://facebook.github.io/react/docs/top-level-api.html#reactdomserver.rendertostaticmarkup
+ */
+function renderToStaticMarkup(element) {
+  !React.isValidElement(element) ? process.env.NODE_ENV !== 'production' ? invariant(false, 'renderToStaticMarkup(): You must pass a valid ReactElement.') : _prodInvariant('47') : void 0;
+  return renderToStringImpl(element, true);
+}
+
+module.exports = {
+  renderToString: renderToString,
+  renderToStaticMarkup: renderToStaticMarkup
+};
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0)))
+
+/***/ }),
+/* 297 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+module.exports = __webpack_require__(294);
+
 
 /***/ })
 /******/ ]);
