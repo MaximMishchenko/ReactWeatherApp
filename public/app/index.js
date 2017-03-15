@@ -12,6 +12,9 @@ import NotFound from './components/NotFound'
 //load foundation
 import 'style-loader!css-loader!foundation-sites/dist/css/foundation.min.css'
 
+//styles
+import 'style-loader!css-loader!./styles/style.css'
+
 const app = document.getElementById('app')
 
 render(
