@@ -1,12 +1,18 @@
 import React from 'react'
-import { Link, IndexLink } from 'react-router'
+import { Link, IndexLink, browserHistory } from 'react-router'
 
 class Nav extends React.Component {
 
   onSearch(event){
     event.preventDefault()
-    alert(1)
 
+    let location = this.refs.search.value
+    let encodedLocation = encodeURIComponent(location)
+
+    if(location.length > 1) {
+      this.refs.search.value = ''
+      browserHistory.push('/?location=' + encodedLocation)
+    }
   }
 
   render(){
@@ -30,7 +36,7 @@ class Nav extends React.Component {
           <form onSubmit={this.onSearch.bind(this)}>
             <ul className="menu">
               <li>
-                <input type="search" placeholder="Search weather by city"/>
+                <input type="search" placeholder="Search weather by city" ref="search"/>
               </li>
               <li>
                 <input type="submit" className="button" value="Get Weather"/>

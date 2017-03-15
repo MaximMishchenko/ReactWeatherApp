@@ -13835,6 +13835,7 @@ var _reactRouter = __webpack_require__(68);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var Examples = function Examples() {
+
   return _react2.default.createElement(
     'div',
     null,
@@ -13856,7 +13857,7 @@ var Examples = function Examples() {
         null,
         _react2.default.createElement(
           _reactRouter.Link,
-          { to: '/?q=Dnepr' },
+          { to: '/?location=Dnipro' },
           'Dnipro, UA'
         )
       ),
@@ -13865,7 +13866,7 @@ var Examples = function Examples() {
         null,
         _react2.default.createElement(
           _reactRouter.Link,
-          { to: '/?q=London' },
+          { to: '/?location=London' },
           'London, UK'
         )
       )
@@ -13955,7 +13956,14 @@ var Nav = function (_React$Component) {
     key: 'onSearch',
     value: function onSearch(event) {
       event.preventDefault();
-      alert(1);
+
+      var location = this.refs.search.value;
+      var encodedLocation = encodeURIComponent(location);
+
+      if (location.length > 1) {
+        this.refs.search.value = '';
+        _reactRouter.browserHistory.push('/?location=' + encodedLocation);
+      }
     }
   }, {
     key: 'render',
@@ -14015,7 +14023,7 @@ var Nav = function (_React$Component) {
               _react2.default.createElement(
                 'li',
                 null,
-                _react2.default.createElement('input', { type: 'search', placeholder: 'Search weather by city' })
+                _react2.default.createElement('input', { type: 'search', placeholder: 'Search weather by city', ref: 'search' })
               ),
               _react2.default.createElement(
                 'li',
@@ -14078,6 +14086,8 @@ var _react = __webpack_require__(4);
 
 var _react2 = _interopRequireDefault(_react);
 
+var _reactRouter = __webpack_require__(68);
+
 var _WeatherForm = __webpack_require__(147);
 
 var _WeatherForm2 = _interopRequireDefault(_WeatherForm);
@@ -14126,7 +14136,9 @@ var Weather = function (_React$Component) {
 
       this.setState({
         isLoading: true,
-        errorMessage: undefined
+        errorMessage: undefined,
+        location: undefined,
+        temp: undefined
       });
 
       _openWeatherMap2.default.getTemp(location).then(function (temp) {
@@ -14138,9 +14150,29 @@ var Weather = function (_React$Component) {
       }, function (e) {
         self.setState({
           isLoading: false,
-          errorMessage: e.message
+          errorMessage: e
         });
       });
+    }
+  }, {
+    key: 'componentDidMount',
+    value: function componentDidMount() {
+      var location = this.props.location.query.location;
+
+      if (location && location.length > 1) {
+        this.handleSearch(location);
+        _reactRouter.browserHistory.push('/');
+      }
+    }
+  }, {
+    key: 'componentWillReceiveProps',
+    value: function componentWillReceiveProps(newProps) {
+      var location = newProps.location.query.location;
+
+      if (location && location.length > 1) {
+        this.handleSearch(location);
+        _reactRouter.browserHistory.push('/');
+      }
     }
   }, {
     key: 'render',

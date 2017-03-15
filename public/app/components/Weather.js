@@ -1,4 +1,5 @@
 import React from 'react'
+import { browserHistory } from 'react-router'
 
 import WeatherForm from './WeatherForm'
 import WeatherMessage from './WeatherMessage'
@@ -23,8 +24,10 @@ class Weather extends React.Component {
 
     this.setState({
       isLoading: true,
-      errorMessage: undefined
-      })
+      errorMessage: undefined,
+      location: undefined,
+      temp: undefined
+    })
 
     openWeatherMap.getTemp(location).then((temp) => {
       self.setState({
@@ -35,9 +38,27 @@ class Weather extends React.Component {
     }, (e) => {
       self.setState({
         isLoading: false,
-        errorMessage: e.message
+        errorMessage: e
       })
     })
+  }
+
+  componentDidMount(){
+    let location = this.props.location.query.location
+
+    if(location && location.length > 1){
+      this.handleSearch(location)
+      browserHistory.push(`/`)
+    }
+  }
+
+  componentWillReceiveProps(newProps){
+    let location = newProps.location.query.location
+
+    if(location && location.length > 1){
+      this.handleSearch(location)
+      browserHistory.push(`/`)
+    }
   }
 
   render(){
