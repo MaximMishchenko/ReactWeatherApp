@@ -1,10 +1,14 @@
 $space-large: 2.5rem;
+$not-found-red: #963B3B;
 
-.page-title {
-  margin-top: $space-large;
-  margin-bottom: $space-large;
+.page-title, .not-found {
+  margin: $space-large 0 $space-large 0;
 }
 
 input[type=search] {
   box-shadow: none;
+}
+
+.not-found {
+  color: $not-found-red;
 }
