@@ -10,10 +10,10 @@ let About = () => {
       </p>
       <ul>
         <li>
-          <a href="https://facebook.github.io/react/">React</a> - This was the JavaScript library used.
+          <a href="https://facebook.github.io/react/" target="_blank">React</a> - This was the JavaScript library used.
         </li>
         <li>
-          <a href="http://openweathermap.org/">Open Weather Map</a> - I used Open Weather Map to search for weather data by city name.
+          <a href="http://openweathermap.org/" target="_blank">Open Weather Map</a> - I used Open Weather Map to search for weather data by city name.
         </li>
       </ul>
     </div>
